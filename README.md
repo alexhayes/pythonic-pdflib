@@ -1,6 +1,6 @@
-# PythonicPdflib
+# PythonicPDFlib
 
-PythonicPdflib is an attempt to create a more "pythonic" API for PDFlib.
+PythonicPDFlib is an attempt to create a more "pythonic" API for PDFlib.
 
 ## Input Attributes
 
@@ -45,6 +45,50 @@ p.set_option('license=my-license')
 p.begin_document('/path/to/my.pdf', '')
 # do stuff...
 p.end_document('')
+```
+
+## Example
+
+```python
+width = 595
+height = 842
+
+p = PythonicPDFlib({'license': 'my-license'})
+
+with d.document('/path/to/my.pdf'):
+	with p.pdi_document('/path/to/my/template.pdf') as doc:
+		page_no = 1
+	    with p.pdi_page(doc, page_no) as page:
+	        with p.page_ext(width, height):
+	        	# Adjust the pdf size to match the template.pdf
+	            p.fit_pdi_page(page, 0, 0, {'adjustpage': None})
+
+	            textflow_options = {
+	            	'fontname': 'Trebuchet_MS', 
+                    'fontsize': 25,
+                    'encoding': 'unicode',
+                    'fillcolor': RGBColor(255, 255, 255),
+                    'alignment': 'center'
+				}
+	            textflow = self.add_textflow("Hello World - %s" % page_no, options=textflow_options)
+	        	self.fit_textflow(tf, 0, 743, self.size.width, 770, options={'verticalalign': 'center'})
+		
+		page_no = 2
+	    with p.pdi_page(doc, page_no) as page:
+	        with p.page_ext(width, height):
+	        	...
+```
+
+Obviously this example is *extremely* nested and perhaps a even un-pythonic... but it is just supposed to be an illustration of how the API behaves. 
+
+## Requirements
+
+- PDFlib from http://www.pdflib.com/
+
+## Installation
+
+```bash
+pip install git+git://github.com/alexhayes/pythonic-pdflib.git
 ```
 
 ## Version
