@@ -14,9 +14,11 @@ Rather than define RBG as a float between 0-1 you can define as an integer betwe
 
 ```python
 from pythonic_pdflib import RGBColor
-
-fillcolor = RGBColor(255, 255, 255)
-tf = p.add_textflow(title, options={'fillcolor': fillcolor})
+tf = p.add_textflow('example text', options={'fillcolor': RGBColor(71, 76, 148)})
+```
+vs.
+```python
+tf = p.add_textflow(-1, 'example text', 'fillcolor={rgb 0.278431373 0.298039216 0.580392157}')
 ```
 
 Note this behaviour needs to be implemented for CMYK, grey and the other color data types. Feel free to fork and submit a pull request.
@@ -36,9 +38,7 @@ p = PythonicPDFlib({'license': 'my-license'})
 with p.document('/path/to/my.pdf'):
     # do stuff
 ```
-
 vs.
-
 ```python
 p = PDFlib()
 p.set_option('license=my-license')
@@ -79,7 +79,7 @@ with d.document('/path/to/my.pdf'):
 	        	...
 ```
 
-Obviously this example is *extremely* nested and perhaps a even un-pythonic... but it is just supposed to be an illustration of how the API behaves. 
+Obviously this example is *extremely* nested and perhaps one would agree even un-pythonic... but it is just supposed to be an illustration of how the API behaves. 
 
 ## Requirements
 
