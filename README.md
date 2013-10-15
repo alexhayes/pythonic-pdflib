@@ -91,9 +91,15 @@ Obviously this example is *extremely* nested and perhaps one would agree even un
 pip install git+git://github.com/alexhayes/pythonic-pdflib.git
 ```
 
+## Testing
+
+```bash
+nosetests
+```
+
 ## Version
 
-PythonicPdflib is currently considered alpha - the API will likely change as it's in active development.
+PythonicPDFlib is currently considered alpha - the API will likely change as it's in early development.
 
 ## Author
 
