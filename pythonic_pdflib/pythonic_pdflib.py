@@ -1,6 +1,5 @@
 from PDFlib import PDFlib
 from contextlib import contextmanager
-import collections
 from .helpers import to_optlist, default
 
 class PythonicPDFlib(PDFlib):
@@ -42,18 +41,24 @@ class PythonicPDFlib(PDFlib):
         return super(PythonicPDFlib, self).add_table_cell(table, column, row, text, to_optlist(options))
 
     @contextmanager
-    def table(self, headers, rows, table_options=None, row_options=None):
+    def table_headers(self, headers, options=None):
         table = -1
         for col, header in enumerate(headers):
             if col == 0:
-                table = self.add_table_cell(col+1, 1, header, options=table_options)
+                table = self.add_table_cell(col+1, 1, header, options=options)
             else:
-                self.add_table_cell(col+1, 1, header, options=table_options, table=table)
-        
+                self.add_table_cell(col+1, 1, header, options=options, table=table)
+        yield table
+
+    @contextmanager
+    def table_rows(self, table, rows, row_options=None, col_options=[]):
         for rowi, row in enumerate(rows):
             for coli, col in enumerate(row):
-                self.add_table_cell(coli+1, rowi+2, str(col), table=table, options=row_options)
-        
+                try:
+                    options = col_options[coli]
+                except IndexError:
+                    options = row_options
+                self.add_table_cell(coli+1, rowi+2, col, table=table, options=options)
         yield table
 
     def add_textflow(self, text, textflow=None, options=None):
@@ -62,10 +67,10 @@ class PythonicPDFlib(PDFlib):
                                                         to_optlist(options))
 
     @contextmanager
-    def document(self, filename, options=None):
-        self.begin_document(filename, options)
+    def document(self, filename, begin_options=None, end_options=None):
+        self.begin_document(filename, begin_options)
         yield
-        self.end_document(options)
+        self.end_document(end_options)
 
     def begin_document(self, filename, options=None):
         return super(PythonicPDFlib, self).begin_document(filename, to_optlist(options))
@@ -280,6 +285,12 @@ class PythonicPDFlib(PDFlib):
 
     def load_image(self, imagetype, filename, options=None):
         return super(PythonicPDFlib, self).load_image(imagetype, filename, to_optlist(options))
+
+    @contextmanager
+    def image(self, imagetype, filename, options=None):
+        image = self.load_image(imagetype, filename, options)
+        yield image
+        self.close_image(image)
 
     def mc_point(self, tagname, options=None):
         super(PythonicPDFlib, self).mc_point(tagname, to_optlist(options))

@@ -11,6 +11,8 @@ def to_optlist(options=None):
         return options
     elif isinstance(options, dict):
         return " ".join([optlist_value(key, value) for key, value in options.iteritems()])
+    elif isinstance(options, collections.Iterable):
+        return " ".join(["{%s}" % to_optlist(option) for option in options])
     else:
         raise AttributeError("Unknown class '%s' for options attribute." % options.__class__)
 

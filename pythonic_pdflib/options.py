@@ -6,6 +6,18 @@ class BaseOption(object):
     
     use = USE_KEYVALUE
 
+class Options(BaseOption):
+    
+    def __init__(self, options):
+        """
+        @param options: Either a dict of options or a list of dicts.
+        """
+        self.options = options
+    
+    def __str__(self, *args, **kwargs):
+        from .helpers import to_optlist
+        return '{%s}' % to_optlist(self.options)
+
 class RGBColor(BaseOption):
     
     def __init__(self, red, green, blue):
@@ -24,14 +36,5 @@ class RGBColor(BaseOption):
 
     def percent_blue(self):
         return self.blue / 255.0
-
-class BaseMultipleOptions(BaseOption):
     
-    def __init__(self, options):
-        self.options = options
-    
-    def __str__(self, *args, **kwargs):
-        from .helpers import to_optlist
-        return '{%s}' % to_optlist(self.options)
-    
-class FitTextline(BaseMultipleOptions): pass
+class FitTextline(Options): pass
