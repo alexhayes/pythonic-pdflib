@@ -341,6 +341,9 @@ class PythonicPDFlib(PDFlib):
             self.end_page_ext(to_optlist(end_page_ext_options))
         else:
             self.suspend_page(to_optlist(suspend_page_options))
+    
+    def close_suspended_page(self, page_no):
+        with self.pdf.resume_page(page_no, close=True): pass
 
     def set_graphics_option(self, options=None):
         super(PythonicPDFlib, self).set_graphics_option(to_optlist(options))
