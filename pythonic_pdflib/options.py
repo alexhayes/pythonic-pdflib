@@ -19,6 +19,7 @@ class Options(BaseOption):
         return '{%s}' % to_optlist(self.options)
 
 class RGBColor(BaseOption):
+    colorspace = 'rgb'
     
     def __init__(self, red, green, blue):
         self.red = red
